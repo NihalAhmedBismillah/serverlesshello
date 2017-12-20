@@ -1,0 +1,35 @@
+
+service:
+   name: hello_world_nihalahmed
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: dev
+  region: us-east-1
+plugins: 
+ - serverless-offline
+functions:
+  user:
+    handler: src/functions/user.handler
+    events:
+      - http: 
+          path : v1/user/{id}
+          method: GET
+          cors: '*'
+          private: false
+      - http: 
+          path : v1/user
+          method: POST
+          cors: '*'
+          private: false
+      - http: 
+          path : v1/user/{id}
+          method: PUT
+          cors: '*'
+          private: false
+      - http: 
+          path : v1/user/{id}
+          method: DELETE
+          cors: '*'
+          private: false
+
