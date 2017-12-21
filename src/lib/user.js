@@ -31,7 +31,7 @@ class ClsUser {
             firstName: user.firstName,
             lastName: user.lastName, emailId: user.emailId, profileUrl: user.profileUrl, DOB: user.DOB
         }, schema);
-        return (error) ? true : false;
+        return (result.error) ? true : false;
     }
 
     static validateRequest(event) {
@@ -45,21 +45,23 @@ class ClsUser {
             return callback('Request not have body', undefined);
         }
         let user = event.body.user;
-
-        if (!this.validateUserModel(user)) {
+        if (this.validateUserModel(user)) {
             return callback('Invalid request', undefined);
         }
+        // open db connection
         monogdbInst.dbConnect((error, db) => {
             if (error) {
                 return callback(error, undefined);
             }
             let collection = db.collection('UserDoc');
             user['_id'] = shortid.generate();
-            collection.save(user, (err, result) => {
-                if (err) {
+            //save data in database
+            collection.save(user, (error, result) => {
+               // close db connection
+                db.close();
+                if (error) {
                     return callback(error, undefined);
                 }
-                db.close();
                 callback(undefined, 'Data saved!');
             });
         });
