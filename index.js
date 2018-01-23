@@ -8,6 +8,6 @@ exports.handler = (events, context, cb) => {
     body: JSON.stringify({
       message: 'ok'
     }),
-  };
+  };//https://github.com/serverless/examples/blob/master/aws-node-rest-api-with-dynamodb/todos/update.js
   return cb(undefined,response_success);
 }
